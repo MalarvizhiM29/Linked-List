@@ -1,0 +1,122 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct node
+{
+  int data;
+  struct node * next;
+};
+	
+struct node * createNode(int data)
+{
+   struct node * newNode = (struct node *)malloc(sizeof(struct node));
+   newNode->data = data;
+   newNode->next = NULL;
+   return newNode;
+}
+	
+void insertAtTheBegining(struct node ** headAddress,int data)
+{
+    struct node * newNode = createNode(data);
+    if(*headAddress == NULL)
+    {
+	   *headAddress = newNode;
+    }
+    else 
+    {
+	    newNode->next = *headAddress;
+	    *headAddress = newNode;
+    }
+}
+
+void insertEnd(struct Node** head, int data){
+
+    struct Node* newNode = (struct Node*) malloc(sizeof(struct Node));
+
+    newNode->data = data;
+    newNode->next = NULL;
+
+    if(*head==NULL){
+        *head = newNode;
+        return;
+    }
+
+    struct Node* temp = *head;
+
+    while(temp->next!=NULL)
+        temp = temp->next;
+
+    temp->next = newNode;
+}
+	
+void insertAtSpecificPosition(struct node ** headAddress,int data, int pos)
+{
+    struct node * newNode = createNode(data);
+    int tpos = 1;
+    if(*headAddress == NULL && tpos == pos){
+        *headAddress = newNode;
+    } else if(tpos == pos){
+        newNode->next = *headAddress;
+        *headAddress = newNode;
+    } else{
+        struct node * temp = *headAddress;
+        while(temp->next!= NULL && tpos != pos-1){
+            temp = temp->next;
+            tpos++;
+        }
+        newNode->next = temp->next;
+        temp->next = newNode;
+    }
+}
+
+
+void deleteAtLast(struct node ** headAddress){
+    struct node * temp = *headAddress;
+    if(*headAddress == NULL){
+        return;
+    } else if((*headAddress)->next == NULL){
+        *headAddress = NULL;
+        free(temp);
+    } else {
+        struct node * prev = NULL;        
+        while(temp->next != NULL){
+            prev = temp;
+            temp = temp->next;
+        }
+        prev->next = NULL;
+        free(temp);
+    }
+}
+
+void deleteAtFront(struct node ** headAddress){
+    temp = head;
+    head = head->next;
+    free(temp);
+}
+
+void deleteAtSpecificPosition(struct Node** head, int pos)
+{
+    struct Node* temp = *head;
+    struct Node* previous;
+    int size = calcSize(*head);
+    if(pos<1 || pos>size){
+        printf("Enter valid position\n");
+
+        return;
+    }
+    if(pos==1){
+        *head = temp->next;
+        printf("Value %d, deleted \n",temp->data);
+        free(temp);
+        return;
+    }
+    while (--pos) 
+    {
+        //store previous link node as we need to change its next val
+        previous = temp; 
+        temp = temp->next; 
+    }
+    previous->next = temp->next;
+    printf("Value %d, deleted \n",temp->data);
+    free(temp);
+}
+
